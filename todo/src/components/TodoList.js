@@ -7,8 +7,10 @@ function TodoList(props) {
   return (
     <div>
       {props.todo.map(item => (
-        <li className="li" key={item.id}>{item.name}</li>
+        <li className={`todo${item.done ? " done" : ""}`} key={item.id}
+        onClick={() => props.toggle(item.id)}>{item.name}</li>
       ))}
+      {props.todo[0] ? <button className='clear-btn' onClick={props.clear}>Clear List</button> : ''}
     </div>
   );
 }

@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import TodoList from './TodoList';
 
-const todoItems = [
-    {
-      name: 'dishes',
-      id: 1,
-      done: false
-    }
-  ]
-
 function TodoForm(props) {
     console.log('form', props)
-    const [todo, setTodo] = useState(todoItems);
+    const [todo, setTodo] = useState([]);
     const [todoText, setTodoText] = useState('');
 
     const handleChanges = e => {
@@ -31,10 +23,32 @@ function TodoForm(props) {
 
     const submitTodo = e => {
         e.preventDefault();
-
-        // setTodo({ toDo: "" });
         addTodo(e, todo);
     };
+
+    const toggleTodo = todoId => {
+        console.log("todo id", todoId);
+    
+        setTodo(
+            todo.map(item => {
+            if (todoId === item.id) {
+              return {
+                ...item,
+                done: !item.done
+              };
+            }
+            return item;
+          })
+        );
+      };
+
+      const clearDone = e => {
+        e.preventDefault();
+    
+        setTodo(
+          todo.filter(todo => !todo.done)
+        );
+      };
 
 
     return(
@@ -48,7 +62,7 @@ function TodoForm(props) {
                 />
                 <button>Add Something To Do</button>
             </form>
-            <TodoList todo={todo} />
+            <TodoList todo={todo} toggle={toggleTodo} clear={clearDone} />
         </div>
     )
 
