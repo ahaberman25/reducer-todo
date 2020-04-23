@@ -2,7 +2,7 @@ export const initialState = {
     todoItems: [
         {
             name: 'Do The Dishes',
-            id: 1,
+            id: Date.now(),
             done: false
         }
     ]

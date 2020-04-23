@@ -2,9 +2,9 @@ import React, {useState, useReducer} from 'react'
 import {initialState, todoReducer} from '../reducers/todoReducer'
 import TodoList from './TodoList';
 
+
 function TodoForm(props) {
     console.log('form', props)
-    // const [todo, setTodo] = useState([]);
     const [state, dispatch] = useReducer(todoReducer, initialState)
     const [todoText, setTodoText] = useState('');
     console.log('state', state)
@@ -17,13 +17,7 @@ function TodoForm(props) {
         e.preventDefault();
         dispatch({type: 'ADD_ITEM', payload: todoText});
         setTodoText('');
-        // setTodo([...todo, newTodo])
     }
-
-    // const submitTodo = e => {
-    //     e.preventDefault();
-    //     addTodo(e, todo);
-    // };
 
     const toggleTodo = todoId => {
         console.log("todo id", todoId);    
