@@ -1,59 +1,44 @@
-import React, { useState } from 'react';
+import React, {useState, useReducer} from 'react'
+import {initialState, todoReducer} from '../reducers/todoReducer'
 import TodoList from './TodoList';
 
 function TodoForm(props) {
     console.log('form', props)
-    const [todo, setTodo] = useState([]);
+    // const [todo, setTodo] = useState([]);
+    const [state, dispatch] = useReducer(todoReducer, initialState)
     const [todoText, setTodoText] = useState('');
+    console.log('state', state)
 
     const handleChanges = e => {
         setTodoText(e.target.value);
     };
 
-    const addTodo = (e, todo) => {
+    const addTodo = (e) => {
         e.preventDefault();
-        const newTodo = {
-            name: todoText,
-            id: Date.now(),
-            done: false
-        }
-
-        setTodo([...todo, newTodo])
+        dispatch({type: 'ADD_ITEM', payload: todoText});
+        setTodoText('');
+        // setTodo([...todo, newTodo])
     }
 
-    const submitTodo = e => {
-        e.preventDefault();
-        addTodo(e, todo);
-    };
+    // const submitTodo = e => {
+    //     e.preventDefault();
+    //     addTodo(e, todo);
+    // };
 
     const toggleTodo = todoId => {
-        console.log("todo id", todoId);
-    
-        setTodo(
-            todo.map(item => {
-            if (todoId === item.id) {
-              return {
-                ...item,
-                done: !item.done
-              };
-            }
-            return item;
-          })
-        );
+        console.log("todo id", todoId);    
+        dispatch({type: 'TOGGLE_ITEM', payload: todoId})
       };
 
       const clearDone = e => {
-        e.preventDefault();
-    
-        setTodo(
-          todo.filter(todo => !todo.done)
-        );
+        e.preventDefault();    
+        dispatch({type: 'CLEAR_COMPLETED'})
       };
 
 
     return(
         <div>
-            <form onSubmit={submitTodo}>
+            <form onSubmit={addTodo}>
                 <input
                     type="text"
                     name="toDo"
@@ -62,7 +47,7 @@ function TodoForm(props) {
                 />
                 <button>Add Something To Do</button>
             </form>
-            <TodoList todo={todo} toggle={toggleTodo} clear={clearDone} />
+            <TodoList todo={state.todoItems} toggle={toggleTodo} clear={clearDone} />
         </div>
     )
 
